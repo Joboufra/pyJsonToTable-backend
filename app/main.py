@@ -9,6 +9,8 @@ app = FastAPI(
     title="pyJsonToTable",
     summary="From JSON to Table :^)",
     version="0.1.1",
+    docs_url="/api/docs", 
+    openapi_url="/api/openapi.json",
     license_info={
         "name": "Apache 2.0",
         "url": "https://www.apache.org/licenses/LICENSE-2.0.html",
@@ -22,7 +24,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.post("/pyJson2table/", tags=["Convertir JSON a HTML"])
+@app.post("/api/pyJson2table/", tags=["Convertir JSON a HTML"])
 def json2table(json_data: Union[dict, list] = Body(...,example={"person":{"name":"John Doe","age":30,"address":{"street":"123 Main Street","city":"Exampleville","zip_code":"12345"},"emails":["john.doe@example.com","j.doe@example.net"]},"items":[{"id":1,"name":"Item 1","price":10.99},{"id":2,"name":"Item 2","price":20.49}]}), authorized: bool = Depends(validate_api_key)):
     try:
         if isinstance(json_data, list):
