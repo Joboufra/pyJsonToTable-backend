@@ -18,9 +18,9 @@ app = FastAPI(
 )
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://10.20.10.10:3003","http://10.20.10.10:3002","https://jsontotable.joboufra.es/"],  
+    allow_origins=["*"],  
     allow_credentials=True,
-    allow_methods=["*"],  
+    allow_methods=["POST"],  
     allow_headers=["*"],
 )
 
