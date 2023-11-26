@@ -25,4 +25,4 @@ jobs:
     needs: build
     steps:
       - name: Establecer flag para el reinicio del servicio
-        run: touch /home/joboufra/actions-jsonToTable/deploy/ok
+        run: touch /home/joboufra/actions-jsontotable-backend/deploy/ok
