@@ -1,0 +1,28 @@
+name: Deploy jsonToTable-backend
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Clonar Repositorio
+        uses: actions/checkout@v3
+      - name: Crear y activar entorno virtual, instalar dependencias
+        run: |
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+      - name: Crear archivo config.py
+        run: |
+          echo "API_KEY = '${{ secrets.API_KEY }}'" > config.py
+          echo "API_KEY_NAME = ${{ secrets.API_KEY_NAME }}" >> config.py
+  deploy:
+    runs-on: self-hosted
+    needs: build
+    steps:
+      - name: Establecer flag para el reinicio del servicio
+        run: touch /home/joboufra/actions-jsonToTable/deploy/ok
