@@ -4,7 +4,17 @@ from .dependencies import validate_api_key, api_key_header
 from json2table import convert
 from typing import Union
 import logging
+import logging.handlers
 
+# Configuración de logging
+logger = logging.getLogger("uvicorn.access")
+logger.setLevel(logging.INFO)
+handler = logging.handlers.RotatingFileHandler("/home/joboufra/actions-jsontotable-backend/deploy/access.log", maxBytes=100000000, backupCount=3)
+formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
+# App
 app = FastAPI(
     title="pyJsonToTable",
     summary="From JSON to Table :^)",
