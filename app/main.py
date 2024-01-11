@@ -40,13 +40,15 @@ app.add_middleware(
 
 @app.post("/api/pyJson2table/", tags=["Convertir JSON a HTML"])
 def json2table(json_data: Union[dict, list] = Body(...,example={"person":{"name":"John Doe","age":30,"address":{"street":"123 Main Street","city":"Exampleville","zip_code":"12345"},"emails":["john.doe@example.com","j.doe@example.net"]},"items":[{"id":1,"name":"Item 1","price":10.99},{"id":2,"name":"Item 2","price":20.49}]}), authorized: bool = Depends(validate_api_key)):
+    logger.info("Recibida petición en /api/pyJson2table/")
     try:
         if isinstance(json_data, list):
             json_data = {"data": json_data}
         html_table = convert(json_data, build_direction="LEFT_TO_RIGHT", table_attributes={"style": "width:100%", "class": "table table-striped"})
+        logger.info("Petición procesada con éxito")
         return {"html": html_table}
     except Exception as e:
-        logging.error(f"Error converting JSON to table: {e}")
+        logger.error(f"Error convirtiendo JSON a tabla: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 logging.basicConfig(level=logging.INFO)
