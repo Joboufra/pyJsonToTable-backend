@@ -5,6 +5,8 @@ from json2table import convert
 from typing import Union
 import logging
 import logging.handlers
+from elasticapm.contrib.starlette import make_apm_client, ElasticAPM
+
 
 # Configuración de logging
 logger = logging.getLogger("uvicorn.access")
@@ -13,6 +15,13 @@ handler = logging.handlers.RotatingFileHandler("/home/joboufra/actions-jsontotab
 formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
 handler.setFormatter(formatter)
 logger.addHandler(handler)
+
+# Configuración de Elastic APM
+apm_config = {
+    'SERVICE_NAME': 'json2table',
+    'SERVER_URL': 'http://10.20.10.10:8200',
+}
+apm_client = make_apm_client(apm_config)
 
 # App
 app = FastAPI(
@@ -26,6 +35,7 @@ app = FastAPI(
         "url": "https://www.apache.org/licenses/LICENSE-2.0.html",
     },
 )
+app.add_middleware(ElasticAPM, client=apm_client)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
