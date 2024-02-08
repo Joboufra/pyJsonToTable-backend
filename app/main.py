@@ -20,6 +20,8 @@ logger.addHandler(handler)
 apm_config = {
     'SERVICE_NAME': 'json2table',
     'SERVER_URL': 'http://10.20.10.10:8200',
+    'ENVIRONMENT': 'pro'
+
 }
 apm_client = make_apm_client(apm_config)
 
